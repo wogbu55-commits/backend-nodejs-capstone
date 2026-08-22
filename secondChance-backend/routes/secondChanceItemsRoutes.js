@@ -112,7 +112,7 @@ router.delete('/:id', async(req, res,next) => {
     try {
         const db = await connectToDatabase();
         const collection = db.collection("secondChanceItems");
-        const secondChanceItem = await collection.findOne({ id:req.params.id });
+        const secondChanceItem = await collection.findOne({ id: req.params.id });
 
         if (!secondChanceItem) {
             logger.error('secondChanceItem not found');
