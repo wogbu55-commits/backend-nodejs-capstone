@@ -86,8 +86,8 @@ router.put('/:id', async (req, res, next) => {
     secondChanceItem.updateAt = new Date()  
     const updatepreloveItem = await collection.findOneAndUpdate({ id: req.params.id },
       { $set: secondChanceItem },
-      { returnDocument: 'after' }
-    ) if (updatepreloveItem) {
+      { returnDocument: 'after' }) 
+    if (updatepreloveItem) {
       res.json({ uploaded: 'success' })
     } else {
       res.json({ uploaded: 'failed' })
