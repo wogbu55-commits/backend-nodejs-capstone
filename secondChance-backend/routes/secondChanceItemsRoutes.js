@@ -83,8 +83,8 @@ router.put('/:id', async (req, res, next) => {
     secondChanceItem.age_days = req.body.age_days
     secondChanceItem.description = req.body.description
     secondChanceItem.age_years = Number((secondChanceItem.age_days / 365).toFixed(1))
-    secondChanceItem.updateAt = new Date()  const updatepreloveItem = await collection.findOneAndUpdate(
-      { id: req.params.id },
+    secondChanceItem.updateAt = new Date()  
+    const updatepreloveItem = await collection.findOneAndUpdate({ id: req.params.id },
       { $set: secondChanceItem },
       { returnDocument: 'after' }
     ) if (updatepreloveItem) {
