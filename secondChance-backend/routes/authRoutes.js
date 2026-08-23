@@ -3,7 +3,11 @@ const router = express.Router();
 const connectToDatabase = require('../models/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const logger = require('../logger');
+const dotenv = require('dotenv');
+const pino = require('pino');
+dotenv.config();
+
+const logger = pino();
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -24,6 +28,7 @@ router.post('/register', async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(req.body.password, salt);
         // Task 5: Insert the user into the database
+        const email = req.body.email;
         const newUser = await collection.insertOne({
             email: req.body.email,
             firstName: req.body.firstName,
