@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
   }
 })
 
-const upload = multer({ storage:'storage' })
+const upload = multer({ storage: 'storage' })
 
 // Get all secondChanceItems
 router.get('/', async (req, res, next) => {
@@ -37,7 +37,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', upload.single('file'), async (req, res, next) => {
   try {
     const db = await connectToDatabase()
-    const collection = db.collection("secondChanceItems")
+    const collection = db.collection('secondChanceItems')
     let secondChanceItem = req.body
     const lastItemQuery = await collection.find().sort({ id: -1 }).limit(1)
     await lastItemQuery.forEach(item => {
@@ -78,22 +78,19 @@ router.put('/:id', async (req, res, next) => {
     if (!secondChanceItem) {
       logger.error('secondChanceItem not found')
       return res.status(404).json({ error: 'secondChanceItem not found' })
-    }    
-    secondChanceItem.category = req.body.category
+    } secondChanceItem.category = req.body.category
     secondChanceItem.condition = req.body.condition
     secondChanceItem.age_days = req.body.age_days
     secondChanceItem.description = req.body.description
     secondChanceItem.age_years = Number((secondChanceItem.age_days / 365).toFixed(1))
-    secondChanceItem.updateAt = new Date()    
-    const updatepreloveItem = await collection.findOneAndUpdate(
+    secondChanceItem.updateAt = new Date()const updatepreloveItem = await collection.findOneAndUpdate(
       { id: req.params.id },
       { $set: secondChanceItem },
       { returnDocument: 'after' }
-    )    
-    if (updatepreloveItem) {
-      res.json({ uploaded:'success' })
+    ) if (updatepreloveItem) {
+      res.json({ uploaded: 'success' })
     } else {
-      res.json({ uploaded:'failed' })
+      res.json({ uploaded: 'failed' })
     }
   } catch (e) {
     next(e)
@@ -113,7 +110,7 @@ router.delete('/:id', async (req, res, next) => {
     }
 
     await collection.deleteOne({ id: req.params.id })
-    res.json({ deleted:'success' })
+    res.json({ deleted: 'success' })
   } catch (e) {
     next(e)
   }
