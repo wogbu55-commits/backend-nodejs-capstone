@@ -1,6 +1,5 @@
 require('dotenv').config()
 const express = require('express')
-const axios = require('axios')
 const logger = require('./logger')
 const expressPino = require('express-pino-logger')({ logger })
 // Task 1: import the natural library
@@ -17,7 +16,7 @@ app.use(expressPino)
 // Task 3: create the POST /sentiment analysis
 app.post('/sentiment', async (req, res) => {
   // Task 4: extract the sentence parameter
-  const { sentence } = req.query;
+  const { sentence } = req.query
 
   if (!sentence) {
     logger.error('No sentence provided')
@@ -46,9 +45,9 @@ app.post('/sentiment', async (req, res) => {
     logger.info(`Sentiment analysis result: ${analysisResult}`)
 
     // Task 6: send a status code of 200 with both sentiment score and the sentiment txt in the format { sentimentScore: analysisResult, sentiment: sentiment }
-    res.json({ sentimentScore: analysisResult, sentiment: sentiment })
-  } catch (err) {
-    logger.error(`Error performing sentiment analysis: ${error}`)
+    res.status(200).json({ sentimentScore: analysisResult, sentiment: sentiment })
+  } catch (e) {
+    logger.error(`Error performing sentiment analysis: ${e}`)
     // Task 7: if there is an error, return a HTTP code of 500 and the json {'message': 'Error performing sentiment analysis'}
     res.status(500).json({ message: 'Error performing sentiment analysis' })
   }
