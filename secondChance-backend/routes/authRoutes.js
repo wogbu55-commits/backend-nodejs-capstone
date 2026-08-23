@@ -114,8 +114,12 @@ router.put('/update', async (req, res) => {
                     const existingUser = await collection.findOne({ email });
 
                     if (!existingUser) {
+                        logger.error('User not found');
                         return res.status(404).json({ error: 'User not found' });
                     }
+
+                    existingUser.firstName = req.body.name;
+                    existingUser.updatedAt = new Date();
 
                     const updatedUser = await collection.findOneAndUpdate(
                         { email },
@@ -129,6 +133,7 @@ router.put('/update', async (req, res) => {
                         },
                     };
                     const authtoken = jwt.sign(payload, jwtSecret);
+                    logger.info('User updated successfully');
 
                     res.json({ authtoken });
                 } catch (e) {
