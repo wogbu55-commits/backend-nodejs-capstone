@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const pino = require('pino');
+const { body, validationResult } = require('express-validator');
 dotenv.config();
 
 const logger = pino();
@@ -92,5 +93,49 @@ router.post('/login', async (req, res) => {
 
     }
 });
+
+
+router.put('/update', async (req, res) => {
+                const errors = validationResult(req);
+                if (!errors.isEmpty()) {
+                    logger.error('Validation errors in update request', errors.array());
+                    return res.status(400).json({ errors: errors.array() });
+                }
+
+                try {
+                    const email = req.header('Email');
+                    if (!email) {
+                        logger.error('Email not found in request headers');
+                        return res.status(400).json({ error: 'Email header is required' });
+                    }
+
+                    const db = await connectToDatabase();
+                    const collection = db.collection('users');
+                    const existingUser = await collection.findOne({ email });
+
+                    if (!existingUser) {
+                        return res.status(404).json({ error: 'User not found' });
+                    }
+
+                    const updatedUser = await collection.findOneAndUpdate(
+                        { email },
+                        { $set: existingUser },
+                        { returnDocument: 'after' }
+                    );
+
+                    const payload = {
+                        user: {
+                            id: updatedUser._id.toString(),
+                        },
+                    };
+                    const authtoken = jwt.sign(payload, jwtSecret);
+
+                    res.json({ authtoken });
+                } catch (e) {
+                    logger.error(e);
+                    return res.status(500).send('Internal server error');
+                }
+        }
+);        
 
 module.exports = router;
