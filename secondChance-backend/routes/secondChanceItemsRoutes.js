@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
   }
 })
 
-const upload = multer({ storage: 'storage' })
+const upload = multer({ storage })
 
 // Get all secondChanceItems
 router.get('/', async (req, res, next) => {
@@ -83,10 +83,10 @@ router.put('/:id', async (req, res, next) => {
     secondChanceItem.age_days = req.body.age_days
     secondChanceItem.description = req.body.description
     secondChanceItem.age_years = Number((secondChanceItem.age_days / 365).toFixed(1))
-    secondChanceItem.updateAt = new Date()  
+    secondChanceItem.updateAt = new Date()
     const updatepreloveItem = await collection.findOneAndUpdate({ id: req.params.id },
       { $set: secondChanceItem },
-      { returnDocument: 'after' }) 
+      { returnDocument: 'after' })
     if (updatepreloveItem) {
       res.json({ uploaded: 'success' })
     } else {
