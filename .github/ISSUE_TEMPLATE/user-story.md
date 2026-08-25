@@ -7,25 +7,26 @@ assignees: ''
 
 ---
 
-**As a** [role]
-**I need** [function]
-**So that** [benefit]
+**As a** [role, for example: registered user]  
+**I need** [function, for example: to create an account]  
+**So that** [benefit, for example: I can access personalized features]
 
 ### Details and Assumptions
-    * [document what you know]
+
+- [Document relevant requirements, dependencies, or constraints]
+- [Example: Users must provide a unique email address]
+- [Example: The user must be logged in to use this feature]
 
 ### Acceptance Criteria
 
-Feature: User story template
+Feature: [Feature name, for example: User registration]
 
-    Scenario: Successful completion of the requested function
-    Given the user has access to the application
-    When the user performs the requested function
-    Then the application should complete the function successfully
-    And the expected result should be displayed
+  Scenario: [Successful outcome, for example: Register with valid details]
+    Given [initial condition]
+    When [user action]
+    Then [expected result]
 
-    Scenario: Invalid input
-    Given the user is using the application
-    When the user provides invalid or incomplete information
-    Then the application should display a validation message
-    And the requested function should not be completed
+  Scenario: [Failure outcome, for example: Register with an existing email]
+    Given [initial condition]
+    When [user action]
+    Then [expected error or behavior]
